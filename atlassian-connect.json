@@ -1,0 +1,63 @@
+{
+    "key": "some-random-value-for-key",
+    "name": "Plugin Name - SR Nurul",
+    "description": "Plugin Description - Dissecting addon",
+    "vendor": {
+        "name": "SR Nurul",
+        "url": "https://www.google.com/"
+    },
+    "baseUrl": "{{localBaseUrl}}",
+    "links": {
+        "self": "{{localBaseUrl}}/atlassian-connect.json",
+        "homepage": "{{localBaseUrl}}/atlassian-connect.json"
+    },
+    "authentication": {
+        "type": "jwt"
+    },
+    "lifecycle": {
+        "installed": "/installed"
+    },
+    "scopes": [
+        "READ"
+    ],
+    "modules": {
+        "generalPages": [
+            {
+                "key": "hello-world-page-confluence",
+                "location": "system.header/left",
+                "name": {
+                    "value": "Hello World XYZ"
+                },
+                "url": "/hello-world",
+                "conditions": [{
+                    "condition": "user_is_logged_in"
+                }]
+            }
+        ],
+        "staticContentMacros": [{
+          "url": "/v1/backgroundColor?color={color}&userKey={user.key}&pageId={page.id}&pageVersion={page.version}&macroHash={macro.hash}",
+          "description": {
+            "value": "Insert description value here  - Allow users to add a background colour around selected content."
+          },
+          "documentation": {
+            "url" : "http://www.google.com/link-to-documentation"
+          },
+          "categories": ["formatting"],
+          "outputType": "inline",
+          "bodyType": "rich-text",
+          "name": {
+            "value": "Background Colour (Connect)"
+          },
+          "key": "bg-color-macro",
+          "parameters": [{
+            "identifier": "color",
+            "name": {
+              "value": "Insert Color Value Below"
+            },
+            "type": "string",
+            "required": true,
+            "multiple": false
+          }]
+        }]
+    }
+}

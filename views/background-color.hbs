@@ -1,0 +1,12 @@
+{{!< layout}}
+{{!--
+    If we have received a macro body, render it.
+    Otherwise, show a preview screen/message.
+--}}
+<div style="background-color: {{{color}}};">
+    {{#if body}}
+        {{{body}}}
+    {{else}}
+        Here is a preview of your screen!
+    {{/if}}
+</div>
