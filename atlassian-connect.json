@@ -18,7 +18,8 @@
         "installed": "/installed"
     },
     "scopes": [
-        "READ"
+        "READ",
+        "WRITE"
     ],
     "modules": {
         "generalPages": [
@@ -32,32 +33,114 @@
                 "conditions": [{
                     "condition": "user_is_logged_in"
                 }]
+            },
+            {
+                "key": "learnersViewer",
+                "name": {
+                    "value": "Confluence Learner Conversations"
+                },
+                "url": "/confluence-conversations",
+                "conditions": [{
+                    "condition": "user_is_logged_in"
+                }],
+                "icon": {
+                    "url": "images/conversations.png"
+                }
             }
         ],
-        "staticContentMacros": [{
-          "url": "/v1/backgroundColor?color={color}&userKey={user.key}&pageId={page.id}&pageVersion={page.version}&macroHash={macro.hash}",
-          "description": {
-            "value": "Insert description value here  - Allow users to add a background colour around selected content."
-          },
-          "documentation": {
-            "url" : "http://www.google.com/link-to-documentation"
-          },
-          "categories": ["formatting"],
-          "outputType": "inline",
-          "bodyType": "rich-text",
-          "name": {
-            "value": "Background Colour (Connect)"
-          },
-          "key": "bg-color-macro",
-          "parameters": [{
-            "identifier": "color",
-            "name": {
-              "value": "Insert Color Value Below"
+        "staticContentMacros": [
+            {
+                "url": "/v1/backgroundColor?color={color}&userKey={user.key}&pageId={page.id}&pageVersion={page.version}&macroHash={macro.hash}",
+                "description": {
+                    "value": "Insert description value here  - Allow users to add a background colour around selected content."
+                },
+                "documentation": {
+                  "url" : "http://www.google.com/link-to-documentation"
+                },
+                "categories": ["formatting"],
+                "outputType": "inline",
+                "bodyType": "rich-text",
+                "name": {
+                    "value": "Background Colour (Connect)"
+                },
+                "key": "bg-color-macro",
+                "parameters": [{
+                    "identifier": "color",
+                    "name": {
+                        "value": "Insert Color Value Below"
+                    },
+                    "type": "string",
+                    "required": true,
+                    "multiple": false
+                }]
+            }
+        ],
+        "customContent": [
+            {
+                "uiSupport": {
+                    "contentViewComponent": {
+                        "moduleKey": "learnersViewer"
+                    },
+                    "icons": {
+                        "item": {
+                            "url": "images/conversations.png"
+                        }
+                    }
+                },
+                "apiSupport": {
+                    "supportedContainerTypes": [
+                        "ac:some-random-value-for-key:learners"
+                    ]
+                },
+                "name": {
+                    "value": "Learner Notes"
+                },
+                "key": "note"
             },
-            "type": "string",
-            "required": true,
-            "multiple": false
-          }]
-        }]
+            {
+                "uiSupport": {
+                    "contentViewComponent": {
+                        "moduleKey": "learnersViewer"
+                    },
+                    "listViewComponent" : {
+                        "moduleKey": "learnersViewer"
+                    },
+                    "icons": {
+                        "item": {
+                            "url": "images/conversations.png"
+                        }
+                    }
+                },
+                "apiSupport": {
+                    "supportedContainerTypes": [
+                        "space"
+                    ],
+                    "supportedChildTypes" : [
+                        "ac:some-random-value-for-key:note"
+                    ],
+                    "indexing" : {
+                        "enabled" : true
+                    }
+                },
+                "name": {
+                    "value": "Learners"
+                },
+                "key": "learners"
+            }
+        ],
+        "dialogs": [
+            {
+                "url": "/add-new-learner",
+                "options": {
+                    "height": "420px",
+                    "width": "600px",
+                    "header": {
+                      "value": "Add a new learner"
+                    }
+                },
+                "key": "newLearner"
+            }
+        ]
+
     }
 }

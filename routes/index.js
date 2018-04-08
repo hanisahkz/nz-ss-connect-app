@@ -28,8 +28,6 @@ module.exports = function (app, addon) {
         }
     );
 
-
-
     // Add any additional route handlers you need for views or REST resources here...
     //1) Define route to preview the input
     //Used to preview the input given to the macro
@@ -82,6 +80,32 @@ module.exports = function (app, addon) {
             }
         );
     });
+
+    //for each of the endpoint defined in package.json, there has to be handling here
+    // This is an example route that's used by the default "generalPage" module.
+    // Verify that the incoming request is authenticated with Atlassian Connect
+    app.get('/confluence-conversations', addon.authenticate(), function (req, res) {
+
+        //let auth = "Basic " + new Buffer("admin:admin");
+        //let spaceKey = req.query['spaceKey'];
+
+        res.render('learners', {
+            title: 'Learner Atl Connect'
+        });
+
+    });
+
+    //lesson 2 - adding UI for custom content
+    app.get('/add-new-learner', addon.authenticate(), function (req, res) {
+            // Rendering a template is easy; the `render()` method takes two params: name of template
+            // and a json object to pass the context in
+            res.render('dialog-new-learner', {
+                title: 'Learner Atl Connect'
+            });
+        }
+    );
+
+
 
     // load any additional files you have in routes and apply those to the app
     {
