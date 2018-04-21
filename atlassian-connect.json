@@ -52,7 +52,7 @@
             {
                 "url": "/v1/backgroundColor?color={color}&userKey={user.key}&pageId={page.id}&pageVersion={page.version}&macroHash={macro.hash}",
                 "description": {
-                    "value": "Insert description value here  - Allow users to add a background colour around selected content."
+                    "value": "Insert description value here - Allow users to add a background colour around selected content."
                 },
                 "documentation": {
                   "url" : "http://www.google.com/link-to-documentation"
@@ -73,6 +73,59 @@
                     "required": true,
                     "multiple": false
                 }]
+            }
+        ],
+        "dynamicContentMacros":[
+            {
+                "url": "/desired-giphy-gif-renderer?gifUrl={url_to_insert}&gifWidth={someWidth}&gifHeight={someHeight}",
+                "description": {
+                    "value": "Insert Giphy Value here"
+                },
+                "documentation": {
+                    "url" : "http://www.google.com/link-to-documentation"
+                },
+                "categories": [],
+                "outputType": "inline",
+                "bodyType": "none",
+                "featured": true,
+                "name": {
+                    "value": "Insert Macro Name - Giphy"
+                },
+                "key": "macro-giphy",
+                "parameters": [{
+                    "identifier": "url_to_insert",
+                    "name": {
+                        "value": "Giphy URL"
+                    },
+                    "type": "string",
+                    "required": true,
+                    "multiple": false,
+                    "hidden": false
+                },
+                {
+                    "identifier": "someWidth",
+                    "name": {
+                        "value": "Width"
+                    },
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "identifier": "someHeight",
+                    "name": {
+                        "value": "Height"
+                    },
+                    "type": "string",
+                    "required": false
+                }],
+                "autoconvert": {
+                    "urlParameter": "url_to_insert",
+                    "matchers": [
+                        {
+                            "pattern": "http://giphy.com/gifs/{}"
+                        }
+                    ]
+                }
             }
         ],
         "customContent": [

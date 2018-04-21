@@ -58,13 +58,13 @@ module.exports = function (app, addon) {
             userKey     = req.query['user_key'];
         var clientKey = req.context.clientKey;
         var url = '/rest/api/content/' + pageId + '/history/' + pageVersion + '/macro/hash/' + macroHash;
-
+        console.log("------------------------------------");
         console.log('url bleh bleh: '+ url);
+        console.log("------------------------------------");
 
         //  Execute API request to get the macro body.
         getHTTPClient(clientKey, userKey).get(url,
             function(err, response, contents){
-
                 //  If we've encountered errors, render an error screen.
                 if (err || (response.statusCode < 200 || response.statusCode > 299)) {
                     console.log(err);
