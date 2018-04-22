@@ -79,7 +79,7 @@
             {
                 "url": "/desired-giphy-gif-renderer?gifUrl={url_to_insert}&gifWidth={someWidth}&gifHeight={someHeight}",
                 "description": {
-                    "value": "Insert Giphy Value here"
+                    "value": "Insert Giphy  Value here"
                 },
                 "documentation": {
                     "url" : "http://www.google.com/link-to-documentation"
@@ -95,7 +95,7 @@
                 "parameters": [{
                     "identifier": "url_to_insert",
                     "name": {
-                        "value": "Giphy URL"
+                        "value": "Giphy  URL"
                     },
                     "type": "string",
                     "required": true,
@@ -122,9 +122,21 @@
                     "urlParameter": "url_to_insert",
                     "matchers": [
                         {
-                            "pattern": "http://giphy.com/gifs/{}"
+                            "pattern": "https://giphy.com/gifs/{}"
                         }
                     ]
+                },
+                "editor": {
+                    "url": "/desired-giphy-search",
+                    "editTitle": {
+                        "value": "Search for Your Giphy Here"
+                    },
+                    "insertTitle": {
+                        "value": "Giphy  Search"
+                    },
+                    "width": "640px",
+                    "height": "370px",
+                    "chrome": false
                 }
             }
         ],
@@ -194,6 +206,5 @@
                 "key": "newLearner"
             }
         ]
-
     }
 }

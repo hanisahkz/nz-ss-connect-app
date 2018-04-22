@@ -1,0 +1,169 @@
+{{!< layout}}
+
+<div class="search-container">
+    <form onsubmit="return false;" autocomplete="off">
+        <input id="giphy-search-field" class="search-field" type="search" placeholder="Search">
+    </form>
+</div>
+
+<div id="giphy-container"></div>
+
+<script>
+    $(function () {
+        console.log("bam bam");
+        var sizeScale = 0.5;
+        var maxWidth = 180;
+        var maxResults = 50;
+        var wall = new freewall("#giphy-container");
+
+        function statusMessage(message) {
+            $(".item").remove();
+            $("#giphy-container").html("<span class=\"message\">" + message + "</span>");
+        }
+
+        function hideMessage() {
+            $("#giphy-container").find(".message").remove();
+        }
+
+        function parseInput(input) {
+            return input.replace(new RegExp(" ", 'g'), "+");
+        }
+
+        function populateWithSearch(query) {
+            var modifiedInput = parseInput(query);
+            statusMessage("Searching for '" + modifiedInput + "'...");
+            $.get("https://api.giphy.com/v1/gifs/search?q=" + modifiedInput + "&api_key=dc6zaTOxFJmzC&limit=" + maxResults)
+                    .done(function (data) {
+                        updateGifTiles(data);
+                    });
+        }
+
+        function populateWithTrending() {
+            console.log("it hits population area");
+            statusMessage("Loading trending images...");
+            $.get("https://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=" + maxResults)
+                    .done(function (data) {
+                        updateGifTiles(data);
+                    });
+        }
+
+        $('#giphy-search-field').keyup(function (event) {
+            console.log("it hits giphy search field");
+            if (event.keyCode == 13) { // Enter key
+                event.preventDefault();
+                populateWithSearch($('#giphy-search-field').val());
+            }
+        });
+
+        // populate the dialog with some default images
+        populateWithTrending();
+
+        function updateGifTiles(data) {
+            $(".item").remove();
+            data.data.forEach(function (gif) {
+                var url = gif.images.original.url;
+                var width = gif.images.original.width * sizeScale;
+                var height = gif.images.original.height * sizeScale;
+                if (width > maxWidth) {
+                    var scale = maxWidth / width;
+                    width = width * scale;
+                    height = height * scale;
+                }
+                var image = document.createElement("img");
+                image.setAttribute("src", url);
+                image.setAttribute("width", "" + width);
+                image.setAttribute("height", "" + height);
+                image.setAttribute("style", "display:none");
+                image.onclick = function () {
+                    $(".selected").removeClass("selected");
+                    image.setAttribute("class", "selected");
+                };
+                var div = document.createElement("div");
+                div.setAttribute("class", "item");
+                div.appendChild(image);
+                div.setAttribute("style", "width: " + width + "px; height: " + height + "px");
+                $("#giphy-container").append(div);
+            });
+            rearrangeItems();
+        }
+
+        function rearrangeItems() {
+            wall.reset({
+                selector: '.item',
+                animate: false,
+                cellW: function (width) {
+                    return maxWidth;
+                },
+                cellH: 'auto',
+                gutterX: 0,
+                gutterY: 0,
+                onResize: function () {
+                    wall.fitWidth();
+                }
+            });
+
+            $("#giphy-container").find('img')
+                    .one("load", function () {
+                        hideMessage();
+                        $(this).show();
+                        wall.fitWidth();
+                    }).each(function () {
+                if (this.complete) $(this).load();
+            })
+        }
+
+        var selectedGif = function (callback) {
+            var selectedGifs = $('#giphy-container').find('.selected');
+            if (selectedGifs.length >= 1) {
+                var gif = $(selectedGifs[0]);
+                callback({url: gif.attr('src'), width: gif.width(), height: gif.height()});
+            }
+        };
+
+        AP.require(["confluence", "dialog"], function (confluence, dialog) {
+            dialog.getButton("submit").bind(function () {
+                selectedGif(function (data) {
+                    confluence.saveMacro({'url': data.url});
+                });
+                confluence.closeMacroEditor();
+                return true;
+            });
+        });
+
+
+
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+<!--<script>-->
+    <!--$(function () {-->
+
+        <!--console.log("Running awesome script.");-->
+
+        <!--//  Hardcoded URL for demonstrative purposes.-->
+        <!--var data = {-->
+            <!--url: "http://giphy.com/gifs/applause-clapping-clap-aLdiZJmmx4OVW"-->
+        <!--};-->
+
+        <!--//  Use the Connect JS API to pass current macro parameters.-->
+        <!--AP.require(["confluence", "dialog"], function (confluence, dialog) {-->
+            <!--//  Latch onto the macro editor's 'submit' event.-->
+            <!--dialog.getButton("submit").bind(function () {-->
+                <!--confluence.saveMacro({-->
+                    <!--'url': data.url-->
+                <!--});-->
+                <!--confluence.closeMacroEditor();-->
+                <!--return true;-->
+            <!--});-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
